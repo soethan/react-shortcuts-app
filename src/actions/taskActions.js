@@ -1,23 +1,25 @@
 import * as types from "./actionTypes";
-import * as courseApi from "../../api/courseApi";
+import * as taskApi from "../api/taskApi";
 
-export function createCourse(task) {
+function createTask(task) {
   return { type: types.CREATE_TASK, task };
 }
 
-export function loadTasksSuccess(tasks) {
+function loadTasksSuccess(tasks) {
   return { type: types.LOAD_TASKS_SUCCESS, tasks };
 }
 
-export function loadTasks() {
+function loadTasks() {
   return function(dispatch) {
-    return courseApi
-      .getCourses()
-      .then(courses => {
-        dispatch(loadTasksSuccess(courses));
+    return taskApi
+      .getTasks()
+      .then(tasks => {
+        dispatch(loadTasksSuccess(tasks));
       })
       .catch(error => {
         throw error;
       });
   };
 }
+
+export { createTask, loadTasksSuccess, loadTasks }
