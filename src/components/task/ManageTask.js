@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 const newTask = {
   id: null,
-  title: ""
+  desc: ""
 };
 
 function ManageTask({

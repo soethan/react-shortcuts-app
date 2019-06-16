@@ -1,4 +1,7 @@
+import { delay } from "q";
+
 export async function handleResponse(response) {
+  // await delay(3000);
   if (response.ok) return response.json();
   if (response.status === 400) {
     // So, a server-side validation error occurred.
