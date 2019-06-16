@@ -1,0 +1,89 @@
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { loadTasks, saveTask } from "../../actions/taskActions";
+import PropTypes from "prop-types";
+import TaskForm from "./TaskForm";
+
+const newTask = {
+    id: null,
+    title: ""
+  };
+
+function ManageTask({
+  tasks,
+  loadTasks,
+  saveTask,
+  history,
+  ...props
+}) {
+  const [task, setTask] = useState({ ...props.task });
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (tasks.length === 0) {
+      loadTasks().catch(error => {
+        alert("Loading tasks failed" + error);
+      });
+    } else {
+      setTask({ ...props.task });
+    }
+  }, [props.task]);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setTask(prevCourse => ({
+      ...prevCourse,
+      [name]: value
+    }));
+  }
+
+  function handleSave(event) {
+    event.preventDefault();
+    saveTask(task).then(() => {
+      history.push("/tasks");
+    });
+  }
+
+  return (
+    <TaskForm
+      task={task}
+      errors={errors}
+      onChange={handleChange}
+      onSave={handleSave}
+    />
+  );
+}
+
+ManageTask.propTypes = {
+  task: PropTypes.object.isRequired,
+  tasks: PropTypes.array.isRequired,
+  loadTasks: PropTypes.func.isRequired,
+  saveTask: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
+};
+
+export function getTaskBySlug(tasks, slug) {
+  return tasks.find(task => task.slug === slug) || null;
+}
+
+function mapStateToProps(state, ownProps) {
+  const slug = ownProps.match.params.slug;
+  const task =
+    slug && state.tasks.length > 0
+      ? getTaskBySlug(state.tasks, slug)
+      : newTask;
+  return {
+    task,
+    tasks: state.tasks
+  };
+}
+
+const mapDispatchToProps = {
+  loadTasks,
+  saveTask
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ManageTask);

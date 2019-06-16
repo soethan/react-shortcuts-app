@@ -22,4 +22,35 @@ function loadTasks() {
   };
 }
 
-export { createTask, loadTasksSuccess, loadTasks }
+function createTaskSuccess(task) {
+  return { type: types.CREATE_TASK_SUCCESS, task };
+}
+
+function updateTaskSuccess(task) {
+  return { type: types.UPDATE_TASK_SUCCESS, task };
+}
+
+function saveTask(task) {
+  //eslint-disable-next-line no-unused-vars
+  return function(dispatch, getState) {
+    return taskApi
+      .saveTask(task)
+      .then(savedTask => {
+        task.id
+          ? dispatch(updateTaskSuccess(savedTask))
+          : dispatch(createTaskSuccess(savedTask));
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+}
+
+export {
+  createTask,
+  loadTasksSuccess,
+  loadTasks,
+  saveTask,
+  updateTaskSuccess,
+  createTaskSuccess
+}

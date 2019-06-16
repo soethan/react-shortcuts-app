@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import * as taskActions from "../../actions/taskActions";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import TaskList from "./TaskList";
 
 class TaskListContainer extends Component {
+  state = {
+    redirectToAddTaskPage: false
+  }
+
   componentDidMount() {
     const { tasks, actions } = this.props;
 
@@ -19,7 +24,16 @@ class TaskListContainer extends Component {
   render() {
     return (
       <>
+        {this.state.redirectToAddTaskPage && <Redirect to="/task" />}
         <h2>Tasks</h2>
+
+        <button
+          style={{ marginBottom: 20 }}
+          className="btn btn-primary"
+          onClick={() => this.setState({ redirectToAddTaskPage: true })}
+        >
+          Add Task
+        </button>
         <TaskList tasks={this.props.tasks} />
       </>
     );
