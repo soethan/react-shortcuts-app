@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import TaskList from "./TaskList";
 
-class TaskContainer extends Component {
+class TaskListContainer extends Component {
   componentDidMount() {
     const { tasks, actions } = this.props;
 
@@ -26,7 +26,7 @@ class TaskContainer extends Component {
   }
 }
 
-TaskContainer.propTypes = {
+TaskListContainer.propTypes = {
   tasks: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
 };
@@ -48,4 +48,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TaskContainer);
+)(TaskListContainer);
