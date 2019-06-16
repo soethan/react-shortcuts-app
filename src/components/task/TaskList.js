@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const TaskList = ({ tasks }) => (
   <table className="table">
@@ -12,7 +13,7 @@ const TaskList = ({ tasks }) => (
       {tasks.map(task => {
         return (
           <tr key={task.id}>
-            <td>{task.desc}</td>
+            <td><Link to={"/task/" + task.slug}>{task.desc}</Link></td>
           </tr>
         );
       })}

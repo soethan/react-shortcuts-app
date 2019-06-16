@@ -3,11 +3,13 @@ import { connect } from "react-redux";
 import { loadTasks, saveTask } from "../../actions/taskActions";
 import PropTypes from "prop-types";
 import TaskForm from "./TaskForm";
+import Spinner from "../common/Spinner";
+import { toast } from "react-toastify";
 
 const newTask = {
-    id: null,
-    title: ""
-  };
+  id: null,
+  title: ""
+};
 
 function ManageTask({
   tasks,
@@ -18,6 +20,7 @@ function ManageTask({
 }) {
   const [task, setTask] = useState({ ...props.task });
   const [errors, setErrors] = useState({});
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (tasks.length === 0) {
@@ -37,15 +40,33 @@ function ManageTask({
     }));
   }
 
+  function formIsValid() {
+    const { desc } = task;
+    const errors = {};
+    if (!desc) errors.desc = "Description is required.";
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
+
   function handleSave(event) {
     event.preventDefault();
+    if (!formIsValid()) return;
+
+    setSaving(true);
     saveTask(task).then(() => {
+      toast.success("Task saved.");
       history.push("/tasks");
+    })
+    .catch(error => {
+      setSaving(false);
+      setErrors({ onSave: error.message });
     });
   }
 
   return (
-    <TaskForm
+    tasks.length === 0 ? (
+      <Spinner />
+    ) : <TaskForm
       task={task}
       errors={errors}
       onChange={handleChange}
