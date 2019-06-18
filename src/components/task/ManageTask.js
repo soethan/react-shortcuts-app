@@ -5,10 +5,12 @@ import PropTypes from "prop-types";
 import TaskForm from "./TaskForm";
 import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
+import { withHotKeys } from '../HOC/withHotKeys';
+import { keyMap, handlers } from '../../shortcuts';
 
 const newTask = {
   id: null,
-  desc: ""
+  desc: ''
 };
 
 function ManageTask({
@@ -21,6 +23,13 @@ function ManageTask({
   const [task, setTask] = useState({ ...props.task });
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
+
+  function getHandler(name) {
+    return props.handlers[name];
+  }
+
+  const setAddTaskHandler = getHandler('setSaveTaskHandler');
+  setAddTaskHandler(handleSave);
 
   useEffect(() => {
     if (tasks.length === 0) {
@@ -49,7 +58,7 @@ function ManageTask({
   }
 
   function handleSave(event) {
-    event.preventDefault();
+    event && event.preventDefault();
     if (!formIsValid()) return;
 
     setSaving(true);
@@ -104,7 +113,7 @@ const mapDispatchToProps = {
   saveTask
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ManageTask);
+export default withHotKeys(
+  connect(mapStateToProps, mapDispatchToProps)(ManageTask),
+  { keyMap: keyMap.manageTaskComponent, handlers: handlers.manageTaskComponent }
+);

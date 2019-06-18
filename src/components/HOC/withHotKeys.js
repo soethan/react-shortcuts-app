@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { HotKeys } from 'react-hotkeys';
-import keyMap from '../../shortcuts';
 
-const withHotKeys = (WrappedComponent) => {
+const withHotKeys = (WrappedComponent, { keyMap, handlers }) => {
   return class extends Component {
-    handlers = {};
     render() {
+      console.log('keyMap=', keyMap);
+      console.log('handlers=', handlers);
       return (
-        <HotKeys keyMap={keyMap} handlers={this.handlers} attach={window} focused>
-          <WrappedComponent {...this.props} handlers={this.handlers} />
+        <HotKeys keyMap={keyMap} handlers={handlers} attach={window} focused>
+          <WrappedComponent {...this.props} handlers={handlers} />
         </HotKeys>
       );
     }
