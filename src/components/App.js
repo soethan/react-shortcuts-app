@@ -4,7 +4,6 @@ import TaskListContainer from "./task/TaskListContainer";
 import ManageTask from "./task/ManageTask";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import keyMap from '../shortcuts';
 import { withHotKeys } from './HOC/withHotKeys';
 
 class App extends Component {
@@ -29,4 +28,4 @@ class App extends Component {
   }
 }
 
-export default withHotKeys(withRouter(App), { keyMap });
+export default withHotKeys(withRouter(App));
