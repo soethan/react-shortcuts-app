@@ -10,14 +10,16 @@ import { keyMap, handlers } from '../shortcuts';
 class App extends Component {
   constructor(props) {
     super(props);
-    console.log('this.props.handlers=', this.props.handlers);
-    const setAddTaskHandler = this.getHandler('setAddTaskHandler');
-    const setTaskListHandler = this.getHandler('setTaskListHandler');
-    setAddTaskHandler(() => this.props.history.push("/task"));
-    setTaskListHandler(() => this.props.history.push("/tasks"));
   }
 
-  getHandler = name => this.props.handlers[name];
+  redirectToAddTask = () => this.props.history.push("/task");
+
+  redirectToTaskList = () => this.props.history.push("/tasks");
+
+  componentDidMount() {
+    this.props.handlers.onAddTask = this.redirectToAddTask;
+    this.props.handlers.onTaskList = this.redirectToTaskList;
+  }
 
   render() {
     return (
