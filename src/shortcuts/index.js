@@ -13,8 +13,8 @@ const handlers = {
   manageTaskComponent: {},
 };
 
-function setShortcutHandler(componentName, key, handlerFn) {
-  handlers[componentName][key] = handlerFn;
+function setShortcutHandler(componentName, handlerKey, handlerFn) {
+  handlers[componentName][handlerKey] = handlerFn;
 };
 
 export { keyMap, handlers, setShortcutHandler };
