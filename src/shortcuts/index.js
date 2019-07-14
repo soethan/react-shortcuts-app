@@ -10,11 +10,11 @@ const keyMap = {
 
 const handlers = {
   appComponent: {},
-  manageTaskComponent: {
-    saveTaskHandler: null,
-    setSaveTaskHandler: fn => handlers.manageTaskComponent.saveTaskHandler = fn,
-    onSaveTask: () => handlers.manageTaskComponent.saveTaskHandler(),
-  }
+  manageTaskComponent: {},
 };
 
-export { keyMap, handlers };
+function setShortcutHandler(componentName, key, handlerFn) {
+  handlers[componentName][key] = handlerFn;
+};
+
+export { keyMap, handlers, setShortcutHandler };

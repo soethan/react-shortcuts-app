@@ -6,12 +6,14 @@ import TaskForm from "./TaskForm";
 import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
 import { withHotKeys } from '../HOC/withHotKeys';
-import { keyMap, handlers } from '../../shortcuts';
+import { keyMap, handlers, setShortcutHandler } from '../../shortcuts';
 
 const newTask = {
   id: null,
   desc: ''
 };
+
+let task, setTask;
 
 function ManageTask({
   tasks,
@@ -20,16 +22,11 @@ function ManageTask({
   history,
   ...props
 }) {
-  const [task, setTask] = useState({ ...props.task });
+  [task, setTask] = useState({ ...props.task });
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
 
-  function getHandler(name) {
-    return props.handlers[name];
-  }
-
-  const setAddTaskHandler = getHandler('setSaveTaskHandler');
-  setAddTaskHandler(handleSave);
+  setShortcutHandler('manageTaskComponent', 'onSaveTask', handleSave);
 
   useEffect(() => {
     if (tasks.length === 0) {
@@ -43,8 +40,8 @@ function ManageTask({
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setTask(prevCourse => ({
-      ...prevCourse,
+    setTask(prevTask => ({
+      ...prevTask,
       [name]: value
     }));
   }
