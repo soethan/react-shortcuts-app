@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { withLocalize, Translate } from 'react-localize-redux';
 import TextInput from "../common/TextInput";
 
 const TaskForm = ({
@@ -11,7 +12,7 @@ const TaskForm = ({
 }) => {
   return (
     <form onSubmit={onSave}>
-      <h2>{task.id ? "Edit" : "Add"} Task</h2>
+      <h2>{task.id ? <Translate id="edit" /> : <Translate id="add" />} Task</h2>
       {errors.onSave && (
         <div className="alert alert-danger" role="alert">
           {errors.onSave}
@@ -19,14 +20,14 @@ const TaskForm = ({
       )}
       <TextInput
         name="desc"
-        label="Description"
+        label={<Translate id="description" />}
         value={task.desc}
         onChange={onChange}
         error={errors.desc}
       />
 
       <button type="submit" disabled={saving} className="btn btn-primary">
-        {saving ? "Saving..." : "Save"}
+        {saving ? "Saving..." : <Translate id="save" />}
       </button>
     </form>
   );
@@ -40,4 +41,4 @@ TaskForm.propTypes = {
   saving: PropTypes.bool
 };
 
-export default TaskForm;
+export default withLocalize(TaskForm);

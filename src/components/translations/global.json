@@ -1,0 +1,22 @@
+{
+  "task": [
+    "Task",
+    "Tarea"
+  ],
+  "add": [
+    "Add",
+    "Añadir"
+  ],
+  "edit": [
+    "Edit",
+    "Editar"
+  ],
+  "save": [
+    "Save",
+    "Salvar"
+  ],
+  "description": [
+    "Description",
+    "Descripción"
+  ]
+}

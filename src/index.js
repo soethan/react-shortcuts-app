@@ -6,14 +6,17 @@ import App from "./components/App";
 import "./index.css";
 import configureStore from "./store";
 import { Provider as ReduxProvider } from "react-redux";
+import { LocalizeProvider } from 'react-localize-redux';
 
 const store = configureStore();
 
 render(
   <ReduxProvider store={store}>
-    <Router>
-      <App />
-    </Router>
+    <LocalizeProvider>
+      <Router>
+        <App />
+      </Router>
+    </LocalizeProvider>
   </ReduxProvider>,
   document.getElementById("app")
 );
