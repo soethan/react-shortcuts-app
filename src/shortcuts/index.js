@@ -1,20 +1,53 @@
+import { flatten, map, values } from 'lodash';
+
 const keyMap = {
   appComponent: {
-    onAddTask: 'alt+a',
-    onTaskList: 'alt+t',
+    onAddTask: 'shift+a',
+    onTaskList: 'shift+l',
   },
   manageTaskComponent: {
-    onSaveTask: 'alt+s'
+    onSaveTask: 'shift+s'
   }
 };
 
-const handlers = {
-  appComponent: {},
-  manageTaskComponent: {},
-};
+const keysList = flatten(map(values(keyMap), mapping => values(mapping)));
+const lettersInKeysList = keysList.map(key => key.split('+')[1].toUpperCase());
 
-function setShortcutHandler(componentName, handlerKey, handlerFn) {
-  handlers[componentName][handlerKey] = handlerFn;
-};
+const shortcutHandlers = {};
+Object.keys(keyMap).forEach(key => {
+  shortcutHandlers[key] = {};
+});
 
-export { keyMap, handlers, setShortcutHandler };
+bindWindowsKeyDown();
+
+function bindWindowsKeyDown() {
+  if (!window.onkeydown) {
+    window.onkeydown = e => {
+      let key;
+      let isShift;
+      if (window.event) {
+        key = window.event.keyCode;
+        isShift = !!window.event.shiftKey;
+      } else {
+        key = e.which;
+        isShift = !!e.shiftKey;
+      }
+      if (isShift) {
+        switch (key) {
+          case 16: // ignore shift key
+            break;
+          default:
+            if (lettersInKeysList.includes(String.fromCharCode(key))) {
+              if (document.activeElement) {
+                document.activeElement.blur();
+              }
+            }
+            break;
+        }
+      }
+
+    };
+  }
+}
+
+export { keyMap, shortcutHandlers };

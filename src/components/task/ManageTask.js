@@ -6,7 +6,7 @@ import TaskForm from "./TaskForm";
 import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
 import { withHotKeys } from '../HOC/withHotKeys';
-import { keyMap, handlers, setShortcutHandler } from '../../shortcuts';
+import { keyMap, shortcutHandlers } from '../../shortcuts';
 
 const newTask = {
   id: null,
@@ -20,13 +20,17 @@ function ManageTask({
   loadTasks,
   saveTask,
   history,
+  hotkeyHandlers,
   ...props
 }) {
   [task, setTask] = useState({ ...props.task });
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
 
-  setShortcutHandler('manageTaskComponent', 'onSaveTask', handleSave);
+  function bindShortcutHandlers() {
+    hotkeyHandlers.onSaveTask = handleSave;
+  };
+  hotkeyHandlers && bindShortcutHandlers();
 
   useEffect(() => {
     if (tasks.length === 0) {
@@ -112,5 +116,8 @@ const mapDispatchToProps = {
 
 export default withHotKeys(
   connect(mapStateToProps, mapDispatchToProps)(ManageTask),
-  { keyMap: keyMap.manageTaskComponent, handlers: handlers.manageTaskComponent }
+  {
+    keyMap: keyMap.manageTaskComponent,
+    handlers: shortcutHandlers.manageTaskComponent
+  }
 );

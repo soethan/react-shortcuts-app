@@ -5,21 +5,21 @@ import ManageTask from "./task/ManageTask";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { withHotKeys } from './HOC/withHotKeys';
-import { keyMap, handlers } from '../shortcuts';
+import { keyMap, shortcutHandlers } from '../shortcuts';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   redirectToAddTask = () => this.props.history.push("/task");
 
   redirectToTaskList = () => this.props.history.push("/tasks");
 
   componentDidMount() {
-    this.props.handlers.onAddTask = this.redirectToAddTask;
-    this.props.handlers.onTaskList = this.redirectToTaskList;
+    this.props.hotkeyHandlers && this.bindShortcutHandlers();
   }
+
+  bindShortcutHandlers = () => {
+    this.props.hotkeyHandlers.onAddTask = this.redirectToAddTask;
+    this.props.hotkeyHandlers.onTaskList = this.redirectToTaskList;
+  };
 
   render() {
     return (
@@ -38,5 +38,5 @@ class App extends Component {
 
 export default withHotKeys(
   withRouter(App),
-  { keyMap: keyMap.appComponent, handlers: handlers.appComponent }
+  { keyMap: keyMap.appComponent, handlers: shortcutHandlers.appComponent }
 );
